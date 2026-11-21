@@ -1,7 +1,7 @@
 # Biblioteka – projekt Angular
 
 **Temat:** Biblioteka
-**Skład grupy:** Grzegorz Kuryś
+**Skład grupy:** Grzegorz Kuryś, Łukasz Regliński
 
 Aplikacja do obsługi biblioteki: katalog książek, czytelnicy oraz wypożyczenia i zwroty. Dane trzymane na json-server.
 
