@@ -26,31 +26,16 @@ Aplikacja do obsługi biblioteki: katalog książek, czytelnicy oraz wypożyczen
 
 ## Architektura komponentów
 
-```mermaid
-graph TD
-    App[AppComponent] --> Navbar[NavbarComponent]
-    App --> Router{{router-outlet}}
+- **AppComponent** – główny komponent aplikacji. Zawiera pasek nawigacji i `router-outlet`, w którym wyświetlają się pozostałe widoki.
+- **NavbarComponent** – menu z linkami do książek, czytelników i wypożyczeń.
+- **BookListComponent** (`/books`) – lista książek z wyszukiwaniem i sortowaniem. Pobiera dane z `BookService`. Każdą książkę wyświetla w `BookCardComponent`, a sortowanie obsługuje `SortBarComponent`.
+- **BookCardComponent** – karta jednej książki. Dostaje książkę od listy (`@Input book: Book`) i informuje listę o usunięciu (`@Output delete: number` – id książki).
+- **SortBarComponent** – przyciski sortowania. Przekazuje liście wybrany sposób sortowania (`@Output sortChange: string`).
+- **BookDetailsComponent** (`/books/:id`) – szczegóły jednej książki: autor i egzemplarze. Bierze `id` z adresu i pobiera książkę z `BookService`.
+- **BookFormComponent** (`/books/new`, `/books/:id/edit`) – formularz dodawania i edycji książki. Zapisuje przez `BookService`.
+- **ReaderListComponent** (`/readers`) – lista czytelników z możliwością usuwania. Korzysta z `ReaderService`.
+- **ReaderFormComponent** (`/readers/new`, `/readers/:id/edit`) – formularz dodawania i edycji czytelnika. Zapisuje przez `ReaderService`.
+- **LoanListComponent** (`/loans`) – lista wypożyczeń z przyciskiem zwrotu, wypożyczenia po terminie są wyróżnione. Korzysta z `LoanService`.
+- **LoanFormComponent** (`/loans/new`) – formularz wypożyczenia: wybór czytelnika i książki. Pobiera listy z `ReaderService` i `BookService`, zapisuje przez `LoanService`.
 
-    Router --> BookList[BookListComponent]
-    Router --> BookDetails[BookDetailsComponent]
-    Router --> BookForm[BookFormComponent]
-    Router --> ReaderList[ReaderListComponent]
-    Router --> ReaderForm[ReaderFormComponent]
-    Router --> LoanList[LoanListComponent]
-    Router --> LoanForm[LoanFormComponent]
-
-    BookList -->|"@Input book: Book<br>@Output delete: number"| BookCard[BookCardComponent]
-    BookList -->|"@Output sortChange: string"| SortBar[SortBarComponent]
-```
-
-| Ścieżka | Komponent |
-|---|---|
-| `/books` | `BookListComponent` |
-| `/books/:id` | `BookDetailsComponent` |
-| `/books/new`, `/books/:id/edit` | `BookFormComponent` |
-| `/readers` | `ReaderListComponent` |
-| `/readers/new`, `/readers/:id/edit` | `ReaderFormComponent` |
-| `/loans` | `LoanListComponent` |
-| `/loans/new` | `LoanFormComponent` |
-
-Komponenty pobierają dane przez serwisy `BookService`, `ReaderService` i `LoanService`, które łączą się z json-server.
+Serwisy `BookService`, `ReaderService` i `LoanService` łączą się z json-server (`http://localhost:3000`).
